@@ -203,6 +203,26 @@ export const levelEcho = {
   waveSpeed: 1
 };
 
+const sqrt3 = Math.sqrt(3);
+export const levelTest = {
+  name: "test level",
+  difficulty: "???",
+  howtosolve: `
+  - Touch any stone.
+  - Before the wave arrives at the other stone, touch the other stone.
+  `,
+  stones: [
+    [0, -sqrt3, 0, 1],
+    [2, -sqrt3, 1, 0],
+    [-1, 0, 0, 1],
+    [3, 0, 1, 0],
+    [0, sqrt3, 0, 1],
+    [2, sqrt3, 1, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
 // export const levelTest = {
 //   name: "test level",
 //   difficulty: "???",

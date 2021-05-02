@@ -2,7 +2,7 @@ export const StoneConfig = {
   radius: 10,
   activeColor: "#582520",
   inactiveColor: "#582520", //"#a5655499",
-  waveRangeColor: "grey",
+  waveRangeColor: "rgba(127,127,255)",
   ringWidth: 3,
   successColor: "#ffe19a",
   indicatorColor: "#cb835599"

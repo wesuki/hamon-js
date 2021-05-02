@@ -7,7 +7,7 @@ export class SelectLevelController {
     levels.forEach((level, i) => {
       let option = document.createElement("option");
       option.value = i;
-      option.text = `${level.name} (${level.difficulty})`;
+      option.text = `(${level.difficulty}) ${level.name}`;
       selectElement.appendChild(option);
     });
 

@@ -82,14 +82,16 @@ export default class Game {
   showSolution() {
     let textType =
       this.levelBluePrint.difficulty === "tutorial" ? "Tutorial" : "Solution";
-    this.elements.showSolution.innerText = `${textType} Solution`;
+    this.elements.showSolution.innerText = `Hide ${textType}`;
     this.elements.showSolution.value = "hide";
     this.elements.solutionText.innerText = this.levelBluePrint.howtosolve
       ? `${textType}: ${this.levelBluePrint.howtosolve}`
       : "(not found)";
   }
   hideSolution() {
-    this.elements.showSolution.innerText = "Show Solution";
+    let textType =
+      this.levelBluePrint.difficulty === "tutorial" ? "Tutorial" : "Solution";
+    this.elements.showSolution.innerText = `Show ${textType}`;
     this.elements.showSolution.value = "show";
     this.elements.solutionText.innerText = null;
   }
