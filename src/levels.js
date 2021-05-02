@@ -16,11 +16,13 @@ export function buildLevel(game, level) {
 
   let iRange = {
     min: iMin - level.waveSpeed * 2,
-    max: iMax + level.waveSpeed * 2
+    max: iMax + level.waveSpeed * 2,
+    center: (iMin + iMax) / 2
   };
   let jRange = {
     min: jMin - level.waveSpeed * 2,
-    max: jMax + level.waveSpeed * 2
+    max: jMax + level.waveSpeed * 2,
+    center: (jMin + jMax) / 2
   };
   // console.log(iRange, jRange);
 
@@ -29,8 +31,8 @@ export function buildLevel(game, level) {
   let d = Math.min(dx, dy);
   // console.log(dx, dy);
   let stones = levelStones.map((ls) => {
-    let x = (ls.i - iRange.min) * d;
-    let y = (ls.j - jRange.min) * d;
+    let x = (ls.i - iRange.center) * d + game.gameWidth / 2;
+    let y = (ls.j - jRange.center) * d + game.gameHeight / 2;
     return new Stone(game, { x: x, y: y }, ls.targetN, ls.initN);
   });
   // console.log(stones);
@@ -41,24 +43,66 @@ export function buildLevel(game, level) {
   };
 }
 
+export const levelTestSolved = {
+  name: "just click",
+  difficulty: "tutorial",
+  howtosolve: `
+  Touch (click) the stone to make a wave.
+  `,
+  stones: [[0, 0, 0, 1]],
+  waveRange: 1,
+  waveSpeed: 1
+};
+export const levelNoClick = {
+  name: "no click",
+  difficulty: "tutorial",
+  howtosolve: `
+  When there is an "X" on the stone, you can not make a wave from it.
+  But when another wave reaches it, it is reactivated.
+  (There is no way to solve this one.)
+  `,
+  stones: [
+    [0, 0, 0, 1],
+    [2, 0, 2, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
+export const levelThisAndThat = {
+  name: "this and that",
+  difficulty: "tutorial",
+  howtosolve: `
+  When reached by a wave, a stone will restore its outer layers indicated by the dashed circle.
+  `,
+  stones: [
+    [0, 0, 0, 1],
+    [2, 0, 1, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
 export const levelTestOutOfMove = {
+  name: "bound to fail",
+  difficulty: "tutorial",
+  howtosolve: `
+  The game will detect when there is no move available.
+  (There is no way to solve this one.)
+  `,
   stones: [[0, 0, 3, 1]],
   waveRange: 1,
   waveSpeed: 1
 };
 
-export const levelTestSolved = {
-  stones: [[0, 0, 0, 1]],
-  waveRange: 1,
-  waveSpeed: 1
-};
-
 export const levelRT345 = {
+  name: "right triangle",
+  difficulty: "hard",
   howtosolve: `
   - Touch the upper left corner stone. 
   - Before the wave reaches the right, touch the right stone.
-  - Touch the bottom stone. 
-  - Touch the center stone.
+  - After the wave passes, touch the bottom stone. 
+  - After the wave passes, touch the center stone.
   `,
   stones: [
     [0, 0, 3, 1],
@@ -69,12 +113,15 @@ export const levelRT345 = {
   waveRange: 4,
   waveSpeed: 1
 };
+
 export const levelAlice = {
+  name: "alice",
+  difficulty: "hard",
   howtosolve: `
-  - Touch the top stone. Wait until the wave fades out.
-  - Touch the bottom stone. 
+  - Touch the top stone.
+  - After the wave passes, touch the bottom stone. 
   - Before the wave reaches the right, touch the right stone.
-  - Touch the left stone.
+  - After the wave passes, touch the left stone.
   `,
   stones: [
     [2, 2, 3, 1], // a
@@ -87,6 +134,14 @@ export const levelAlice = {
 };
 
 export const levelJunban = {
+  difficulty: "medium",
+  name: "order",
+  howtosolve: `
+  - Touch the stones in the right bottom stone.
+  - After the wave passes, touch the bottom-left and the top-right stones.
+  - After the waves pass, touch the top-left stone.
+  - After the wave passes, touch the center stone.
+  `,
   stones: [
     [2, 2, 0, 2],
     [0, 0, 1, 2],
@@ -99,9 +154,11 @@ export const levelJunban = {
 };
 
 export const levelTiming = {
+  name: "timing",
+  difficulty: "hard",
   howtosolve: `
   - Touch all the corner stones.
-  - _After_ the first wave passes the center but _before_ the second wave arrives, 
+  - *After* the first wave passes the center but *befor* the second wave arrives, 
   touch the center stone.
   `,
   stones: [
@@ -115,4 +172,64 @@ export const levelTiming = {
   waveSpeed: 0.75
 };
 
-export const testLevel = levelRT345;
+export const levelDual = {
+  name: "dual",
+  difficulty: "easy",
+  howtosolve: `
+  - Touch any stone.
+  - Before the wave arrives at the other stone, touch the other stone.
+  `,
+  stones: [
+    [2, 2, 1, 2],
+    [0, 0, 1, 2]
+  ],
+  waveRange: 4,
+  waveSpeed: 1
+};
+
+export const levelEcho = {
+  name: "echo",
+  difficulty: "easy",
+  howtosolve: `
+  - Touch the center stone.
+  - After the wave reaches the other two, touch the other stones.
+  `,
+  stones: [
+    [0, 0, 0, 0],
+    [2, 0, 2, 1],
+    [4, 0, 0, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
+// export const levelTest = {
+//   name: "test level",
+//   difficulty: "???",
+//   howtosolve: `
+//   - Touch any stone.
+//   - Before the wave arrives at the other stone, touch the other stone.
+//   `,
+//   stones: [
+//     [0, 0, 0, 1],
+//     [2, 0, 1, 0],
+//   ],
+//   waveRange: 3,
+//   waveSpeed: 1
+// };
+
+export const allLevels = [
+  // levelTest,
+  levelTestSolved,
+  levelNoClick,
+  levelThisAndThat,
+  levelTestOutOfMove,
+  levelDual,
+  levelEcho,
+  levelJunban,
+  levelAlice,
+  levelRT345,
+  levelTiming
+];
+
+// export const testLevel = levelRT345;

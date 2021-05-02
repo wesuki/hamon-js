@@ -1,9 +1,11 @@
-import { Stone, StoneConfig } from "/src/stone";
+import { StoneConfig } from "/src/stone";
 import Wave from "/src/wave";
+import Background from "/src/background";
 
 import InputHandler from "/src/input";
+import { SelectLevelController } from "/src/buttons";
 
-import { buildLevel, testLevel } from "/src/levels";
+import { buildLevel, allLevels } from "/src/levels";
 
 const GameState = {
   Menu: 0,
@@ -13,7 +15,7 @@ const GameState = {
 };
 
 export default class Game {
-  constructor(canvas) {
+  constructor(elements) {
     let prepareFunctions = {};
     prepareFunctions[GameState.GameOver] = this.prepareGameOver;
     this.prepareFunctions = prepareFunctions;
@@ -28,20 +30,68 @@ export default class Game {
     drawFunctions[GameState.GameOver] = this.drawGameOver;
     this.drawFunctions = drawFunctions;
 
-    this.canvas = canvas;
+    this.elements = elements;
 
-    this.gameWidth = canvas.width;
-    this.gameHeight = canvas.height;
+    this.gameWidth = this.elements.canvas.width;
+    this.gameHeight = this.elements.canvas.height;
 
     this.gameObjects = [];
+    this.gameObjects.push(new Background(this));
 
-    this.level = buildLevel(this, testLevel);
+    // game controls
+    this.inputHandler = new InputHandler(this.elements.canvas, this);
+
+    this.selectLevelMenuController = new SelectLevelController(
+      this.elements.selectLevel,
+      this,
+      allLevels
+    );
+    this.setLevel(this.selectLevelMenuController.getLevel());
+
+    this.elements.resetLevel.addEventListener("click", (event) => {
+      this.resetCurrentLevel();
+    });
+
+    this.elements.nextLevel.addEventListener("click", (event) => {
+      this.selectLevelMenuController.changeToNext();
+    });
+
+    this.elements.showSolution.addEventListener("click", (event) => {
+      if (this.elements.showSolution.value === "show") {
+        this.showSolution();
+      } else {
+        this.hideSolution();
+      }
+    });
+  }
+
+  setLevel(levelBluePrint) {
+    this.levelBluePrint = levelBluePrint;
+    this.resetCurrentLevel();
+  }
+
+  resetCurrentLevel() {
+    this.level = buildLevel(this, this.levelBluePrint);
     this.stones = this.level.stones;
     this.waves = [];
-
-    this.inputHandler = new InputHandler(this.canvas, this);
-    // console.log(this);
+    if (this.levelBluePrint.difficulty === "tutorial") this.showSolution();
+    else this.hideSolution();
     this.setGameState(GameState.Running);
+  }
+
+  showSolution() {
+    let textType =
+      this.levelBluePrint.difficulty === "tutorial" ? "Tutorial" : "Solution";
+    this.elements.showSolution.innerText = `${textType} Solution`;
+    this.elements.showSolution.value = "hide";
+    this.elements.solutionText.innerText = this.levelBluePrint.howtosolve
+      ? `${textType}: ${this.levelBluePrint.howtosolve}`
+      : "(not found)";
+  }
+  hideSolution() {
+    this.elements.showSolution.innerText = "Show Solution";
+    this.elements.showSolution.value = "show";
+    this.elements.solutionText.innerText = null;
   }
 
   setGameState(newState) {
@@ -91,66 +141,18 @@ export default class Game {
     [...this.gameObjects, ...this.stones, ...this.waves].forEach((object) => {
       object.draw(ctx);
     });
-
-    // if (this.gamestate === GAMESTATE.Paused) {
-    //   ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-    //   ctx.fillStyle = "rgba(0,0,0,0.5)";
-    //   ctx.fill();
-
-    //   ctx.font = "30px Arial";
-    //   ctx.fillStyle = "white";
-    //   ctx.textAlign = "center";
-    //   ctx.fillText(
-    //       "Paused",
-    //       this.gameWidth / 2,
-    //       this.gameHeight / 2,
-    //     );
-    // }
-
-    // if (this.gamestate === GAMESTATE.Menu) {
-    //   ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-    //   ctx.fillStyle = "rgba(0,0,0,1)";
-    //   ctx.fill();
-
-    //   ctx.font = "30px Arial";
-    //   ctx.fillStyle = "white";
-    //   ctx.textAlign = "center";
-    //   ctx.fillText(
-    //     "Press SPACEBAR To Start",
-    //     this.gameWidth / 2,
-    //     this.gameHeight / 2,
-    //   );
-    // }
-    // if (this.gamestate === GAMESTATE.GameOver) {
-    //   ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-    //   ctx.fillStyle = "rgba(0,0,0,1)";
-    //   ctx.fill();
-
-    //   ctx.font = "30px Arial";
-    //   ctx.fillStyle = "white";
-    //   ctx.textAlign = "center";
-    //   ctx.fillText("GAME OVER", this.gameWidth / 2, this.gameHeight / 2);
-    // }
   }
-
-  //   togglePause() {
-  //     if (this.gamestate == GAMESTATE.Paused) {
-  //       this.gamestate = GAMESTATE.Running;
-  //     } else {
-  //       this.gamestate = GAMESTATE.Paused;
-  //     }
-  //   }
 
   isSolved() {
     return (
       this.waves.length === 0 &&
-      this.stones.every((stone) => stone.N === stone.targetN)
+      this.stones?.every((stone) => stone.N === stone.targetN)
     );
   }
 
   isFailed() {
     return (
-      this.waves.length === 0 && this.stones.every((stone) => stone.N === 0)
+      this.waves.length === 0 && this.stones?.every((stone) => stone.N === 0)
     );
   }
 

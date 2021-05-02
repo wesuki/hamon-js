@@ -4,19 +4,41 @@ import Game from "/src/game";
 document.getElementById("app").innerHTML = `
 <h1>Hamon</h1>
 <div>
-Touch stones. Make waves. Match numbers.
+  Touch stones. Make waves. Make every stone shine.
+</div>
+<br/>
+<div>
+  Current Level:
+  <select id="selectLevel"></select>
+  <button id="resetLevel">Reset Level</button>
+  <button id="nextLevel">Next Level</button>
+</div>
+<div>
+</div>
+<div>
+  <canvas id="gameScreen"></canvas>
+</div>
+<div>
+  <button id="showSolution">Show Solution</button>
+  <div id="solutionText"></div>
 </div>
 `;
 
-const GAME_WIDTH = 600;
-const GAME_HEIGHT = 600;
-
 let canvas = document.getElementById("gameScreen");
-canvas.width = GAME_WIDTH;
-canvas.height = GAME_HEIGHT;
+canvas.width = 600;
+canvas.height = 600;
 let ctx = canvas.getContext("2d");
 
-let game = new Game(canvas);
+let elements = {
+  canvas: canvas,
+  selectLevel: document.getElementById("selectLevel"),
+  resetLevel: document.getElementById("resetLevel"),
+  nextLevel: document.getElementById("nextLevel"),
+  showSolution: document.getElementById("showSolution"),
+  solutionText: document.getElementById("solutionText")
+};
+
+let game = new Game(elements);
 
 function startGameLoop() {
   var lastTime;
@@ -24,7 +46,7 @@ function startGameLoop() {
     if (timestamp !== undefined) {
       if (lastTime !== undefined) {
         let deltaTime = timestamp - lastTime;
-        ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
       }
       lastTime = timestamp;
