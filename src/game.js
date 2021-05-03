@@ -80,19 +80,21 @@ export default class Game {
   }
 
   showSolution() {
-    let textType =
-      this.levelBluePrint.difficulty === "tutorial" ? "Tutorial" : "Solution";
-    this.elements.showSolution.innerText = `Hide ${textType}`;
+    const isTutorial = this.levelBluePrint.difficulty === "tutorial";
+    const textType = isTutorial ? "Tutorial" : "Solution";
     this.elements.showSolution.value = "hide";
-    this.elements.solutionText.innerText = this.levelBluePrint.howtosolve
-      ? `${textType}: ${this.levelBluePrint.howtosolve}`
-      : "(not found)";
+    this.elements.showSolution.innerText = `Hide ${textType}`;
+    const text =
+      (isTutorial
+        ? this.levelBluePrint.tutorial
+        : this.levelBluePrint.howtosolve) ?? "(not found)";
+    this.elements.solutionText.innerText = `${textType}: ${text}`;
   }
   hideSolution() {
-    let textType =
-      this.levelBluePrint.difficulty === "tutorial" ? "Tutorial" : "Solution";
-    this.elements.showSolution.innerText = `Show ${textType}`;
+    const isTutorial = this.levelBluePrint.difficulty === "tutorial";
+    const textType = isTutorial ? "Tutorial" : "Solution";
     this.elements.showSolution.value = "show";
+    this.elements.showSolution.innerText = `Show ${textType}`;
     this.elements.solutionText.innerText = null;
   }
 
@@ -135,8 +137,7 @@ export default class Game {
     this.waves = this.waves.filter((wave) => wave.active);
     // let afterLength = this.waves.length
     // if (prevLength !== afterLength) console.log(this.waves.length)
-    if (this.isSolved() || this.isFailed())
-      this.setGameState(GameState.GameOver);
+    if (this.isSolved()) this.setGameState(GameState.GameOver);
   }
 
   drawRunning(ctx) {
@@ -149,12 +150,6 @@ export default class Game {
     return (
       this.waves.length === 0 &&
       this.stones?.every((stone) => stone.N === stone.targetN)
-    );
-  }
-
-  isFailed() {
-    return (
-      this.waves.length === 0 && this.stones?.every((stone) => stone.N === 0)
     );
   }
 

@@ -14,7 +14,7 @@ export class SelectLevelController {
     selectElement.addEventListener("change", (event) => {
       let levelSelected = levels[event.target.selectedIndex];
       if (levelSelected) this.game.setLevel(levelSelected);
-      console.log(event);
+      // console.log(event);
     });
   }
 
