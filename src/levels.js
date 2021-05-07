@@ -331,7 +331,10 @@ export const levelSimpTiming = {
   name: "introducing timing",
   difficulty: "easy",
   howtosolve: `
-  ...
+  - (This is the simplest puzzle requires timing moves to solve.)
+  - Make all stones touchable.
+  - Touch the left stone.
+  - After the wave arrives at the middle stone, but before it arrives the right, touch the middle and the right stone at the same time.
   `,
   stones: [
     [0, 0, 2, 0],
