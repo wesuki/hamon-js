@@ -327,6 +327,21 @@ const levelChitChat = {
 //   waveSpeed: 1
 // };
 
+export const levelSimpTiming = {
+  name: "introducing timing",
+  difficulty: "easy",
+  howtosolve: `
+  ...
+  `,
+  stones: [
+    [0, 0, 2, 0],
+    [1, 0, 1, 1],
+    [3, 0, 2, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
 var levelTest;
 export const allLevels = [].concat(levelTest ? [levelTest] : [], [
   /* Tutorial levels */
