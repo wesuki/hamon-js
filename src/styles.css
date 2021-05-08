@@ -9,3 +9,21 @@ body {
 img {
   display: none;
 }
+
+
+div.container {
+  display: flex;
+  padding-bottom: 20px;
+
+}
+
+.title {
+  font-size: 30pt;
+}
+
+.version {
+  /* align-self: flex-end; */
+  padding-left: 5px;
+  font-size: 12pt;
+  color: grey;
+}

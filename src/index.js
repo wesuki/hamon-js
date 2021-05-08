@@ -2,7 +2,10 @@ import "./styles.css";
 import Game from "/src/game";
 
 document.getElementById("app").innerHTML = `
-<h1>Hamon</h1>
+<div class="container">
+<span class="title">Hamon</span>
+<span class="version">v${process.env.npm_package_version}+${process.env.BUILD_VERSION}</span>
+</div>
 <div>
   Touch stones. Make waves. Make every stone shine.
 </div>

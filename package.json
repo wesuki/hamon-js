@@ -4,7 +4,7 @@
   "description": "A zen puzzle game featuring stones and waves.",
   "main": "./index.html",
   "scripts": {
-    "start": "parcel ./index.html",
+    "start": "parcel ./index.html --open",
     "prebuild-dev": "shx rm -rf dist/*",
     "build-dev": "parcel build ./index.html --no-minify --public-url ./",
     "prebuild": "shx rm -rf dist/*",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
+    "parcel-plugin-git-build-info": "^0.0.1",
     "shx": "^0.3.2"
   },
   "resolutions": {
