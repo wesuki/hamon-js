@@ -87,7 +87,7 @@ export const levelDual = {
   name: "dual",
   difficulty: "tutorial",
   tutorial: `
-  Timing is sometimes important.
+  Sometimes you need to act before a wave passes.
   `,
   howtosolve: `
     - Touch any stone.
@@ -191,8 +191,8 @@ export const levelOrder = {
   waveSpeed: 1
 };
 
-export const levelTiming = {
-  name: "timing",
+export const levelEquality = {
+  name: "equality",
   difficulty: "hard",
   howtosolve: `
   - Touch all the corner stones.
@@ -312,13 +312,36 @@ const levelChitChat = {
   waveSpeed: 1
 };
 
-// levelTest = {
+export const levelTiming = {
+  name: "timing",
+  difficulty: "medium",
+  howtosolve: `
+  - Touch the middle stone to make the left and the right touchable.
+  - Touch the left stone.
+  - After the wave arrives at the middle stone, but before it arrives the right, touch the middle and the right stone at the same time.
+  `,
+  remark: `
+  This is the simplest puzzle requires complex timed moves to solve.
+  `,
+  stones: [
+    [0, 0, 2, 0],
+    [1, 0, 1, 1],
+    [3, 0, 2, 0]
+  ],
+  waveRange: 3,
+  waveSpeed: 1
+};
+
+// Copy and uncomment this block to make your new level
+// export const levelTest = {
 //   name: "test level",
 //   difficulty: "???",
 //   howtosolve: `
 //   - Touch any stone.
 //   - Before the wave arrives at the other stone, touch the other stone.
 //   `,
+//   hint: null,   // something you'd like to say to help the player solve the puzzle
+//   remark: null, // something you'd like to say after the player has solved the puzzle
 //   stones: [
 //     [0, 0, 0, 1],
 //     [2, 0, 1, 0],
@@ -328,24 +351,30 @@ const levelChitChat = {
 // };
 
 var levelTest;
-export const allLevels = [].concat(levelTest ? [levelTest] : [], [
-  /* Tutorial levels */
-  levelTestSolved,
-  levelNoClick,
-  levelWaveRange,
-  levelDual,
-  levelEcho,
-  /* Easy levels */
-  levelOneTwoThree,
-  levelCross,
-  levelChitChat,
-  /* Medium levels */
-  levelOrder,
-  level7th,
-  /* Hard levels */
-  levelAlice,
-  levelRT345,
-  levelTiming
-]);
+export const allLevels = [].concat(
+  /* `levelTest` appears first if present */
+  levelTest ? [levelTest] : [],
+  /* all the actual levels */
+  [
+    /* Tutorial levels */
+    levelTestSolved,
+    levelNoClick,
+    levelWaveRange,
+    levelDual,
+    levelEcho,
+    /* Easy levels */
+    levelOneTwoThree,
+    levelCross,
+    levelChitChat,
+    /* Medium levels */
+    levelOrder,
+    level7th,
+    levelTiming,
+    /* Hard levels */
+    levelAlice,
+    levelRT345,
+    levelEquality
+  ]
+);
 
 // export const testLevel = levelRT345;
