@@ -17,6 +17,7 @@
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "parcel-plugin-git-build-info": "^0.0.1",
+    "push-dir": "^0.4.1",
     "shx": "^0.3.2"
   },
   "resolutions": {
