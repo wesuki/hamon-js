@@ -10,6 +10,7 @@ document.getElementById("app").innerHTML = `
 <div>
   Current Level:
   <select id="selectLevel"></select>
+  <button id="previousLevel">Previous Level</button>
   <button id="resetLevel">Reset Level</button>
   <button id="nextLevel">Next Level</button>
 </div>
@@ -34,6 +35,7 @@ let elements = {
   selectLevel: document.getElementById("selectLevel"),
   resetLevel: document.getElementById("resetLevel"),
   nextLevel: document.getElementById("nextLevel"),
+  previousLevel: document.getElementById("previousLevel"),
   showSolution: document.getElementById("showSolution"),
   solutionText: document.getElementById("solutionText")
 };

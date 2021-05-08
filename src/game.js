@@ -3,7 +3,10 @@ import Wave from "/src/wave";
 import Background from "/src/background";
 
 import InputHandler from "/src/input";
-import { SelectLevelController } from "/src/buttons";
+import {
+  SelectLevelController,
+  ShowSolutionController
+} from "/src/controllers";
 
 import { buildLevel, allLevels } from "/src/levels";
 
@@ -41,28 +44,30 @@ export default class Game {
     // game controls
     this.inputHandler = new InputHandler(this.elements.canvas, this);
 
-    this.selectLevelMenuController = new SelectLevelController(
-      this.elements.selectLevel,
-      this,
-      allLevels
-    );
-    this.setLevel(this.selectLevelMenuController.getLevel());
+    this.selectLevelMenuController = new SelectLevelController({
+      game: this,
+      selectElement: this.elements.selectLevel,
+      levels: allLevels
+    });
 
     this.elements.resetLevel.addEventListener("click", (event) => {
       this.resetCurrentLevel();
+    });
+
+    this.elements.previousLevel.addEventListener("click", (event) => {
+      this.selectLevelMenuController.changeToPrevious();
     });
 
     this.elements.nextLevel.addEventListener("click", (event) => {
       this.selectLevelMenuController.changeToNext();
     });
 
-    this.elements.showSolution.addEventListener("click", (event) => {
-      if (this.elements.showSolution.value === "show") {
-        this.showSolution();
-      } else {
-        this.hideSolution();
-      }
+    this.showSolutionController = new ShowSolutionController({
+      game: this,
+      elements
     });
+
+    this.setLevel(this.selectLevelMenuController.getLevel());
   }
 
   setLevel(levelBluePrint) {
@@ -74,28 +79,10 @@ export default class Game {
     this.level = buildLevel(this, this.levelBluePrint);
     this.stones = this.level.stones;
     this.waves = [];
-    if (this.levelBluePrint.difficulty === "tutorial") this.showSolution();
-    else this.hideSolution();
+    if (this.levelBluePrint.difficulty === "tutorial")
+      this.showSolutionController.showSolution();
+    else this.showSolutionController.hideSolution();
     this.setGameState(GameState.Running);
-  }
-
-  showSolution() {
-    const isTutorial = this.levelBluePrint.difficulty === "tutorial";
-    const textType = isTutorial ? "Tutorial" : "Solution";
-    this.elements.showSolution.value = "hide";
-    this.elements.showSolution.innerText = `Hide ${textType}`;
-    const text =
-      (isTutorial
-        ? this.levelBluePrint.tutorial
-        : this.levelBluePrint.howtosolve) ?? "(not found)";
-    this.elements.solutionText.innerText = `${textType}: ${text}`;
-  }
-  hideSolution() {
-    const isTutorial = this.levelBluePrint.difficulty === "tutorial";
-    const textType = isTutorial ? "Tutorial" : "Solution";
-    this.elements.showSolution.value = "show";
-    this.elements.showSolution.innerText = `Show ${textType}`;
-    this.elements.solutionText.innerText = null;
   }
 
   setGameState(newState) {
