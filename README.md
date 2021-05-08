@@ -1,2 +1,3 @@
 # hamon-js
-Created with CodeSandbox
+
+A puzzle game with stones and waves.
